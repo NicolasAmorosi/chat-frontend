@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { FooterChat } from "../components/ui/FooterChat.jsx";
 
 export function Chat() {
   const { chatId } = useParams();
@@ -7,9 +8,8 @@ export function Chat() {
     <div className=" flex flex-col items-between grow">
       <div className="flex flex-col items-center justify-center w-full h-full bg-zinc-800">
         <h1 className="text-4xl font-bold text-white">Chat {chatId}</h1>
-        <div>Hola</div>
-        <button>Agregar</button>
       </div>
+      <FooterChat />
     </div>
   );
 }
