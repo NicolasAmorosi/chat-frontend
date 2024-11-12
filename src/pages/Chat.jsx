@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { FooterChat } from "../components/ui/FooterChat.jsx";
+import { FooterChat } from "../components/layout/FooterChat.jsx";
 import { Header } from "../components/layout/Header";
 
 export function Chat() {
