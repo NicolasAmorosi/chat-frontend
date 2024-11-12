@@ -27,7 +27,7 @@ export const EmojiModal = ({ setIsOpen }) => {
                     isVisible ? "opacity-100" : "opacity-0"
                 }`}
             >
-                <p className="text-white text-center">
+                <p className="text-white text-center font-semibold">
                     Esto viene en la proxima versión
                 </p>
             </div>
