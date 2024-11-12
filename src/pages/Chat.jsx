@@ -1,13 +1,11 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { subscribeToChat, sendMessage, getMessages } from "../utils/Api";
+import { useEffect, useState, useRef } from "react";
 
 import { ChatFooter } from "../components/layout/ChatFooter";
 import { ChatSpace } from "../components/layout/ChatSpace";
 import { ChatTop } from "../components/layout/ChatTop";
 
-import { FooterChat } from "../components/layout/FooterChat.jsx";
-import { Header } from "../components/layout/Header";
+// import { FooterChat } from "../components/layout/FooterChat.jsx";
+// import { Header } from "../components/layout/Header";
 
 export function Chat({ socket }) {
     const [messages, setMessages] = useState([]);
