@@ -1,9 +1,11 @@
 import { useState } from "react";
 
 import { Icon } from "../ui/Icon";
+import { EmojiModal } from "../ui/EmojiModal";
 
 export const ChatFooter = ({ socket }) => {
     const [message, setMessage] = useState("");
+    const [isEmojiModalOpen, setIsEmojiModalOpen] = useState(false);
 
     const handleTyping = () =>
         socket.emit("typing", `${localStorage.getItem("userName")} is typing`);
@@ -28,9 +30,16 @@ export const ChatFooter = ({ socket }) => {
                     className="flex flex-row w-full space-x-2 px-2"
                     onSubmit={handleSendMessage}
                 >
+                    <button
+                        type="button"
+                        className=" my-2 border rounded-md px-1 bg-zinc-600 text-white border-zinc-600 hover:bg-zinc-700 hover:border-zinc-700"
+                        onClick={() => setIsEmojiModalOpen(true)}
+                    >
+                        <Icon iconName="emoji" className="w-7 h-7" />
+                    </button>
                     <input
                         type="text"
-                        placeholder="Escribí tu mensaje"
+                        placeholder="Escriba su mensaje..."
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         onKeyDown={handleTyping}
@@ -38,12 +47,13 @@ export const ChatFooter = ({ socket }) => {
                     />
                     <button
                         type="submit"
-                        className=" my-2 border rounded-md p-2 bg-zinc-600 text-white border-zinc-600"
+                        className=" my-2 border rounded-md p-2 bg-zinc-600 text-white border-zinc-600 hover:bg-zinc-700 hover:border-zinc-700"
                     >
                         <Icon iconName="send" className="w-5 h-5" />
                     </button>
                 </form>
             </div>
+            {isEmojiModalOpen && <EmojiModal setIsOpen={setIsEmojiModalOpen} />}
         </div>
     );
 };

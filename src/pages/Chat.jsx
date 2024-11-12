@@ -5,7 +5,6 @@ import { ChatSpace } from "../components/layout/ChatSpace";
 import { ChatTop } from "../components/layout/ChatTop";
 
 // import { FooterChat } from "../components/layout/FooterChat.jsx";
-// import { Header } from "../components/layout/Header";
 
 export function Chat({ socket }) {
     const [messages, setMessages] = useState([]);
@@ -31,12 +30,12 @@ export function Chat({ socket }) {
     return (
         <div className="relative flex flex-col grow h-full">
             {/* Parte arriba */}
-            <div className="absolute top-0 w-full z-10">
+            <div className="absolute top-0 w-full z-20">
                 <ChatTop />
             </div>
 
             {/* Parte abajo */}
-            <div className="flex flex-col grow mt-16 mb-14 overflow-y-auto bg-zinc-900">
+            <div className="flex flex-col grow mt-16 mb-16 overflow-y-auto bg-zinc-900">
                 {/* Mensajes */}
                 <ChatSpace
                     messages={messages}
