@@ -1,13 +1,30 @@
 import { useState, useEffect } from "react";
+import { SidebarLink } from "./SidebarLink";
 
 export function Sidebar({ socket }) {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        socket.on("newUserResponse", (data) => setUsers(data));
-    }, [socket, users]);
+        socket.on("newUserResponse", (data) => {
+            const updatedUsers = addCurrentUser(data);
+            setUsers(updatedUsers);
+        });
+    }, [socket]);
 
-    console.log(users);
+    const addCurrentUser = (userList) => {
+        const currentUser = localStorage.getItem("userName");
+        if (
+            currentUser &&
+            !userList.some((user) => user.username === currentUser)
+        ) {
+            return [...userList, { id: socket.id, username: currentUser }];
+        }
+        return userList;
+    };
+
+    useEffect(() => {
+        setUsers((prevUsers) => addCurrentUser(prevUsers));
+    }, []);
 
     return (
         <div className="flex flex-col h-screen w-96 bg-zinc-900 p-4">
@@ -19,14 +36,7 @@ export function Sidebar({ socket }) {
                 </div>
                 <div className=" px-5 space-y-2">
                     {users.map((user) => (
-                        <div
-                            key={user.socketID}
-                            className=" bg-zinc-700 px-3 py-1 rounded-md"
-                        >
-                            <p className=" text-white font-semibold">
-                                {user.username}
-                            </p>
-                        </div>
+                        <SidebarLink key={user.id} user={user} />
                     ))}
                 </div>
             </div>
