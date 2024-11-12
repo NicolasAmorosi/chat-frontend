@@ -1,18 +1,56 @@
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { subscribeToChat, sendMessage, getMessages } from "../utils/Api";
+
+import { ChatFooter } from "../components/layout/ChatFooter";
+import { ChatSpace } from "../components/layout/ChatSpace";
+import { ChatTop } from "../components/layout/ChatTop";
+
 import { FooterChat } from "../components/layout/FooterChat.jsx";
 import { Header } from "../components/layout/Header";
 
-export function Chat() {
-  const { chatId } = useParams();
+export function Chat({ socket }) {
+    const [messages, setMessages] = useState([]);
+    const [typingStatus, setTypingStatus] = useState("");
+    const lastMessageRef = useRef(null);
 
-  return (
-    <div className=" flex flex-col items-between grow">
-      <Header contacto={chatId} />
+    useEffect(() => {
+        socket.on("messageResponse", (data) =>
+            setMessages([...messages, data])
+        );
+        setTypingStatus("");
+    }, [socket, messages]);
 
-      <div className="flex flex-col items-center justify-center w-full h-full bg-zinc-800">
-        <h1 className="text-4xl font-bold text-white">Chat {chatId}</h1>
-      </div>
-      <FooterChat />
-    </div>
-  );
+    useEffect(() => {
+        socket.on("typingResponse", (data) => setTypingStatus(data));
+    }, [socket]);
+
+    useEffect(() => {
+        // scroll to bottom every time messages change
+        lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    return (
+        <div className="relative flex flex-col grow h-full">
+            {/* Parte arriba */}
+            <div className="absolute top-0 w-full z-10">
+                <ChatTop />
+            </div>
+
+            {/* Parte abajo */}
+            <div className="flex flex-col grow mt-16 mb-14 overflow-y-auto bg-zinc-900">
+                {/* Mensajes */}
+                <ChatSpace
+                    messages={messages}
+                    lastMessageRef={lastMessageRef}
+                    typingStatus={typingStatus}
+                />
+            </div>
+
+            {/* Footer */}
+            <div className="absolute bottom-0 w-full z-10">
+                <ChatFooter socket={socket} />
+            </div>
+        </div>
+    );
 }
